@@ -18,6 +18,13 @@ class Solution:
         if len(nums) == 0:
             return [-1,-1]
         
+        if len(nums) == 1: 
+            if nums[0] == target:
+                return [0,0]
+            else:
+                return [-1,-1]
+    
+        
         result = []
         
         left, right = 0, len(nums)-1
