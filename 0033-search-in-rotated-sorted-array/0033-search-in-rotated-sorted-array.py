@@ -37,6 +37,6 @@ class Solution:
             elif result[mid] < target:
                 left = mid+1
             else:
-                return nums.index(target)
+                return (mid + k) % len(nums)
         
         return -1
