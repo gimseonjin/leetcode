@@ -1,7 +1,6 @@
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         
-        
         def find_k(nums):
             k = 0
             
@@ -18,6 +17,12 @@ class Solution:
         
         if len(nums) == 0:
             return -1
+        
+        if len(nums) == 1:
+            if nums[0] == target:
+                return 0
+            else:
+                return -1
         
         k = find_k(nums)
         result = rotation(nums, k)
