@@ -4,6 +4,10 @@ class Solution:
         
         def find_k(nums):
             k = 0
+            
+            if nums[0] < nums[len(nums)-1]:
+                return k
+            
             while k+1 < len(nums) and nums[k] < nums[k+1]:
                 k += 1
             return k+1
@@ -13,8 +17,6 @@ class Solution:
         
         k = find_k(nums)
         result = rotation(nums, k)
-        
-        print(result)
         
         left, right = 0, len(nums)-1
         
