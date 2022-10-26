@@ -10,10 +10,14 @@ class Solution:
             
             while k+1 < len(nums) and nums[k] < nums[k+1]:
                 k += 1
+                
             return k+1
         
         def rotation(nums, k):
             return nums[k:] + nums[:k]
+        
+        if len(nums) == 0:
+            return -1
         
         k = find_k(nums)
         result = rotation(nums, k)
