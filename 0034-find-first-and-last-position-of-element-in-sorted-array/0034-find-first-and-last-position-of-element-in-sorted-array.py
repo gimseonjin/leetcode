@@ -15,6 +15,9 @@ and find the target's index!
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         
+        if len(nums) == 0:
+            return [-1,-1]
+        
         result = []
         
         left, right = 0, len(nums)-1
@@ -30,7 +33,7 @@ class Solution:
                 start = mid
                 end = mid
                 
-                while nums[start] == target and start > -1:
+                while start > -1 and nums[start] == target :
                     start -= 1
                 
                 while end < len(nums) and nums[end] == target :
