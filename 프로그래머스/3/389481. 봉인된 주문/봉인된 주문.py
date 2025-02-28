@@ -1,31 +1,28 @@
-"""
-아 26진수다
-"""
-def int_to_base26(n: int) -> str:
-    digits = "abcdefghijklmnopqrstuvwxyz"
-    result = ""
-    while n:
-        n, remainder = divmod(n - 1, 26)
-        result = digits[remainder] + result
-    return result
+def number_to_spell(index: int) -> str:
+    """정수 인덱스를 주문 문자열(26진수)로 변환"""
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    spell = ""
+    while index:
+        index, remainder = divmod(index - 1, 26)
+        spell = alphabet[remainder] + spell
+    return spell
 
-def base26_to_int(s: str) -> int:
-    digits = "abcdefghijklmnopqrstuvwxyz"
-    n = 0
-    for char in s:
-        n = n * 26 + (digits.index(char) + 1)
-    return n
+def spell_to_number(spell: str) -> int:
+    """주문 문자열(26진수)을 정수 인덱스로 변환"""
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    index = 0
+    for char in spell:
+        index = index * 26 + (alphabet.index(char) + 1)
+    return index
 
-
-def solution(n, bans):
+def solution(order: int, banned_spells: list) -> str:
+    """삭제된 주문을 제외하고 order번째 주문을 반환"""
     
-    to_delete = []
-    for ban in bans:
-        spell_num = base26_to_int(ban)
-        to_delete.append(spell_num)
+    banned_indices = [spell_to_number(spell) for spell in banned_spells]
+    banned_indices.sort()
     
-    for delete in sorted(to_delete):
-        if delete <= n:
-            n += 1
+    for banned in banned_indices:
+        if banned <= order:
+            order += 1
             
-    return int_to_base26(n)
+    return number_to_spell(order)
