@@ -32,7 +32,10 @@ class TrailPoint(val id: Int) {
 }
 
 // 전체 산 구조 (그래프)
-class Mountain {
+class Mountain(
+    private val gates: Set<Int>,
+    private val summits: Set<Int>
+) {
     private val points: MutableMap<Int, TrailPoint> = mutableMapOf()
 
     fun addPath(from: Int, to: Int, cost: Int) {
@@ -42,17 +45,12 @@ class Mountain {
         toPoint.connectTo(fromPoint, cost)
     }
 
-    fun getPoint(id: Int): TrailPoint? = points[id]
-}
-
-// intensity 계산 담당
-class IntensityCalculator(private val mountain: Mountain) {
-    fun calculateFromAllGates(gates: Set<Int>, summits: Set<Int>): Result {
+    fun calculateFromAllGates(): Result {
         val pq = PriorityQueue<IntensityNode>()
         val intensities = mutableMapOf<Int, Int>().withDefault { Int.MAX_VALUE }
 
         for (gate in gates) {
-            val point = mountain.getPoint(gate) ?: continue
+            val point = points[gate] ?: continue
             intensities[gate] = 0
             pq.add(IntensityNode(point, 0))
         }
@@ -84,24 +82,20 @@ class IntensityCalculator(private val mountain: Mountain) {
     }
 }
 
-
 class Solution {
     fun solution(n: Int, paths: Array<IntArray>, gates: IntArray, summits: IntArray): IntArray {
         // 1. 그래프 구성
-        val mountain = Mountain()
+        val mountain = Mountain(
+            gates = gates.toSet(),
+            summits = summits.toSet()
+        )
         for (path in paths) {
             val (from, to, cost) = path
             mountain.addPath(from, to, cost)
         }
 
-        // 2. intensity 계산기 생성
-        val calculator = IntensityCalculator(mountain)
-        
-        // 3. 최적 경로 계산
-        val result = calculator.calculateFromAllGates(
-            gates = gates.toSet(),
-            summits = summits.toSet()
-        )
+        // 2. 최적 경로 계산
+        val result = mountain.calculateFromAllGates()
 
         // 4. 결과 반환
         return if (result == null) intArrayOf() else intArrayOf(result.summit, result.intensity)
